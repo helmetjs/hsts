@@ -1,0 +1,32 @@
+{
+  "name": "hsts",
+  "author": "Adam Baldwin <baldwin@andyet.net> (http://andyet.net/team/baldwin)",
+  "contributors": [
+    "Evan Hahn <me@evanhahn.com> (http://evanhahn.com)"
+  ],
+  "description": "HTTP Strict Transport Security middleware.",
+  "version": "0.1.0",
+  "keywords": [
+    "helmet",
+    "security",
+    "express",
+    "connect",
+    "hsts",
+    "https"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/helmetjs/hsts.git"
+  },
+  "bugs": "https://github.com/helmetjs/hsts/issues",
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "mocha": "^2.0.1",
+    "sinon": "^1.11.1"
+  },
+  "dependencies": {
+    "underscore": "1.7.0"
+  }
+}
