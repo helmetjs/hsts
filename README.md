@@ -1,5 +1,7 @@
 # HTTP Strict Transport Security middlware
 
+[![Build Status](https://travis-ci.org/helmetjs/hsts.svg?branch=master)](https://travis-ci.org/helmetjs/hsts)
+
 **Trying to prevent:** Users viewing your site on HTTP instead of HTTPS. HTTP is pretty insecure.
 
 **How this mitigates this:** This middleware adds the `Strict-Transport-Security` header to the response. This tells browsers, "hey, only use HTTPS for the next period of time". ([See the spec](http://tools.ietf.org/html/draft-ietf-websec-strict-transport-sec-04) for more.)
