@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var util = require('core-util-is');
 
 var oneDay = 86400000;
 
@@ -13,20 +13,20 @@ module.exports = function hsts(options) {
   if (options.maxage != null) {
     throw new Error('Did you mean to pass "maxAge" instead of "maxage"?');
   }
-  if (!_(options).isObject()) {
+  if (!util.isObject(options)) {
     throw new Error('HSTS must be passed an object or undefined.');
   }
   if (arguments.length > 1) {
     throw new Error('HSTS passed the wrong number of arguments.');
   }
 
-  if (!_(maxAgeMS).isNumber()) {
+  if (!util.isNumber(maxAgeMS)) {
     throw new TypeError('HSTS must be passed a numeric maxAge parameter.');
   }
   if (maxAgeMS < 0) {
     throw new RangeError('HSTS maxAge must be nonnegative.');
   }
-  if (setIf && !_(setIf).isFunction()) {
+  if (setIf && !util.isFunction(setIf)) {
     throw new TypeError('setIf must be a function.');
   }
   if (setIf && force) {
