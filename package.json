@@ -27,6 +27,6 @@
     "sinon": "^1.14.1"
   },
   "dependencies": {
-    "lodash": "3.5.0"
+    "core-util-is": "1.0.1"
   }
 }
