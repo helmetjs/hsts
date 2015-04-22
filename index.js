@@ -42,7 +42,7 @@ module.exports = function hsts(options) {
     header += '; preload';
   }
 
-  return function hsts(req, res, next)  {
+  return function hsts(req, res, next) {
 
     var setHeader;
     if (setIf) {
