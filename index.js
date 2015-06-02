@@ -36,7 +36,7 @@ module.exports = function hsts(options) {
   var maxAge = Math.round(maxAgeMS / 1000);
   var header = 'max-age=' + maxAge;
   if (options.includeSubdomains) {
-    header += '; includeSubdomains';
+    header += '; includeSubDomains';
   }
   if (options.preload) {
     header += '; preload';

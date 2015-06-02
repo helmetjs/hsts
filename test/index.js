@@ -51,14 +51,14 @@ describe('hsts', function () {
     handler = hsts({ includeSubdomains: true });
     req.secure = true;
     handler(req, res, next);
-    assert(res.setHeader.calledWith('Strict-Transport-Security', 'max-age=86400; includeSubdomains'));
+    assert(res.setHeader.calledWith('Strict-Transport-Security', 'max-age=86400; includeSubDomains'));
   });
 
   it('can include subdomains and preload with no specified max-age', function () {
     handler = hsts({ includeSubdomains: true, preload: true });
     req.secure = true;
     handler(req, res, next);
-    assert(res.setHeader.calledWith('Strict-Transport-Security', 'max-age=86400; includeSubdomains; preload'));
+    assert(res.setHeader.calledWith('Strict-Transport-Security', 'max-age=86400; includeSubDomains; preload'));
   });
 
   it('is unset if req.secure is false', function () {
@@ -109,7 +109,7 @@ describe('hsts', function () {
   });
 
   it('can include subdomains', function () {
-    var expectedHeader = defaultHeader + '; includeSubdomains';
+    var expectedHeader = defaultHeader + '; includeSubDomains';
     req.secure = true;
     handler = hsts({ maxAge: maxAge, includeSubdomains: true });
     handler(req, res, next);
