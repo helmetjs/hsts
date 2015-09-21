@@ -20,7 +20,7 @@ You can also include subdomains. If this is set on *example.com*, supported brow
 ```javascript
 app.use(hsts({
   maxAge: 123000,
-  includeSubdomains: true
+  includeSubDomains: true
 }));
 ```
 
@@ -29,7 +29,7 @@ Chrome lets you submit your site for baked-into-Chrome HSTS by adding `preload` 
 ```javascript
 app.use(hsts({
   maxAge: 10886400000,     // Must be at least 18 weeks to be approved by Google
-  includeSubdomains: true, // Must be enabled to be approved by Google
+  includeSubDomains: true, // Must be enabled to be approved by Google
   preload: true
 }));
 ```

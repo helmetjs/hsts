@@ -108,10 +108,18 @@ describe('hsts', function () {
     assert(res.setHeader.calledWith('Strict-Transport-Security', 'max-age=1'));
   });
 
-  it('can include subdomains', function () {
+  it('can include subdomains using includeSubdomains option', function () {
     var expectedHeader = defaultHeader + '; includeSubDomains';
     req.secure = true;
     handler = hsts({ maxAge: maxAge, includeSubdomains: true });
+    handler(req, res, next);
+    assert(res.setHeader.calledWith('Strict-Transport-Security', expectedHeader));
+  });
+
+  it('can include subdomains using preferred includeSubDomains option', function () {
+    var expectedHeader = defaultHeader + '; includeSubDomains';
+    req.secure = true;
+    handler = hsts({ maxAge: maxAge, includeSubdomains: false, includeSubDomains: true });
     handler(req, res, next);
     assert(res.setHeader.calledWith('Strict-Transport-Security', expectedHeader));
   });
