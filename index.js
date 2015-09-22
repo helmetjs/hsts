@@ -6,7 +6,7 @@ module.exports = function hsts(options) {
 
   options = options || {};
 
-  var maxAgeMS = (options.maxAge != null ? options.maxAge : oneDay);
+  var maxAgeMS = options.maxAge != null ? options.maxAge : oneDay;
   var force = options.force;
   var setIf = options.setIf;
 
