@@ -8,7 +8,7 @@ var assert = require('assert')
 var sinon = require('sinon')
 
 describe('hsts', function () {
-  var maxAge = 7776000000 // 90 days in milliseconds
+  var maxAge = 7776000000  // 90 days in milliseconds
   var defaultHeader = 'max-age=' + (maxAge / 1000)
 
   var handler, req, res, next
@@ -20,23 +20,17 @@ describe('hsts', function () {
   })
 
   it('throws an error with invalid parameters', function () {
-    function test (value) {
-      assert.throws(function () {
-        hsts(value)
-        console.log(value, typeof value)
-      }, Error)
-    }
-    test('1234')
-    test(-1234)
-    test(1234)
-    test(1234, true)
-    test({ maxAge: -123 })
-    test({ maxAge: '123' })
-    test({ maxAge: true })
-    test({ setIf: 123 })
-    test({ setIf: true })
-    test({ setIf: function () {}, force: true })
-    test({ maxage: 1234 })
+    assert.throws(hsts.bind(this, '1234'))
+    assert.throws(hsts.bind(this, -1234))
+    assert.throws(hsts.bind(this, 1234))
+    assert.throws(hsts.bind(this, 1234, true))
+    assert.throws(hsts.bind(this, { maxAge: -123 }))
+    assert.throws(hsts.bind(this, { maxAge: '123' }))
+    assert.throws(hsts.bind(this, { maxAge: true }))
+    assert.throws(hsts.bind(this, { setIf: 123 }))
+    assert.throws(hsts.bind(this, { setIf: true }))
+    assert.throws(hsts.bind(this, { setIf: function () {}, force: true }))
+    assert.throws(hsts.bind(this, { maxage: 1234 }))
   })
 
   it('sets a default value to 1 day', function () {
