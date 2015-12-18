@@ -3,9 +3,7 @@ HTTP Strict Transport Security middlware
 [![Build Status](https://travis-ci.org/helmetjs/hsts.svg?branch=master)](https://travis-ci.org/helmetjs/hsts)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
-**Trying to prevent:** Users viewing your site on HTTP instead of HTTPS. HTTP is pretty insecure.
-
-**How this mitigates this:** This middleware adds the `Strict-Transport-Security` header to the response. This tells browsers, "hey, only use HTTPS for the next period of time". ([See the spec](http://tools.ietf.org/html/draft-ietf-websec-strict-transport-sec-04) for more.)
+This middleware adds the `Strict-Transport-Security` header to the response. This tells browsers, "hey, only use HTTPS for the next period of time". ([See the spec](http://tools.ietf.org/html/draft-ietf-websec-strict-transport-sec-04) for more.)
 
 This will set the Strict Transport Security header, telling browsers to visit by HTTPS for the next ninety days:
 
@@ -55,4 +53,4 @@ app.use(hsts({
 
 Note that the max age is in milliseconds, even though the spec uses seconds. This will round to the nearest full second.
 
-**Limitations:** This only works if your site actually has HTTPS. It won't tell users on HTTP to *switch* to HTTPS, it will just tell HTTPS users to stick around. You can enforce this with the [express-enforces-ssl](https://github.com/aredo/express-enforces-ssl) module. It's [somewhat well-supported by browsers](http://caniuse.com/#feat=stricttransportsecurity).
+This only works if your site actually has HTTPS. It won't tell users on HTTP to *switch* to HTTPS, it will just tell HTTPS users to stick around. You can enforce this with the [express-enforces-ssl](https://github.com/aredo/express-enforces-ssl) module. This header is [somewhat well-supported by browsers](http://caniuse.com/#feat=stricttransportsecurity).
