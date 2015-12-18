@@ -21,13 +21,21 @@
   },
   "bugs": "https://github.com/helmetjs/hsts/issues",
   "scripts": {
-    "test": "mocha"
+    "test": "standard && mocha"
   },
   "devDependencies": {
     "mocha": "^2.2.1",
-    "sinon": "^1.14.1"
+    "sinon": "^1.14.1",
+    "standard": "^5.4.1"
   },
   "dependencies": {
     "core-util-is": "1.0.1"
+  },
+  "standard": {
+    "globals": [
+      "describe",
+      "beforeEach",
+      "it"
+    ]
   }
 }
