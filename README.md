@@ -3,6 +3,8 @@ HTTP Strict Transport Security middlware
 [![Build Status](https://travis-ci.org/helmetjs/hsts.svg?branch=master)](https://travis-ci.org/helmetjs/hsts)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
+[_Looking for a changelog?_](https://github.com/helmetjs/helmet/blob/master/HISTORY.md)
+
 This middleware adds the `Strict-Transport-Security` header to the response. This tells browsers, "hey, only use HTTPS for the next period of time". ([See the spec](http://tools.ietf.org/html/draft-ietf-websec-strict-transport-sec-04) for more.)
 
 This will set the Strict Transport Security header, telling browsers to visit by HTTPS for the next ninety days:
