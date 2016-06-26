@@ -12,15 +12,16 @@ This will set the Strict Transport Security header, telling browsers to visit by
 ```javascript
 var hsts = require('hsts')
 
-var ninetyDaysInMilliseconds = 7776000000
-app.use(hsts({ maxAge: ninetyDaysInMilliseconds }))
+var ninetyDaysInSeconds = 7776000
+
+app.use(hsts({ maxAge: ninetyDaysInSeconds }))
 ```
 
 You can also include subdomains. If this is set on *example.com*, supported browsers will also use HTTPS on *my-subdomain.example.com*. Here's how you do that:
 
 ```javascript
 app.use(hsts({
-  maxAge: 123000,
+  maxAge: 10886400,       // 18 weeks in seconds
   includeSubDomains: true
 }))
 ```
@@ -29,7 +30,7 @@ Chrome lets you submit your site for baked-into-Chrome HSTS by adding `preload` 
 
 ```javascript
 app.use(hsts({
-  maxAge: 10886400000,     // Must be at least 18 weeks to be approved by Google
+  maxAge: 10886400,        // Must be at least 18 weeks to be approved by Google
   includeSubDomains: true, // Must be enabled to be approved by Google
   preload: true
 }))
@@ -53,6 +54,6 @@ app.use(hsts({
 }))
 ```
 
-Note that the max age is in milliseconds, even though the spec uses seconds. This will round to the nearest full second.
+Note that the max age must be in seconds.
 
 This only works if your site actually has HTTPS. It won't tell users on HTTP to *switch* to HTTPS, it will just tell HTTPS users to stick around. You can enforce this with the [express-enforces-ssl](https://github.com/aredo/express-enforces-ssl) module. This header is [somewhat well-supported by browsers](http://caniuse.com/#feat=stricttransportsecurity).
