@@ -8,8 +8,8 @@ var assert = require('assert')
 var sinon = require('sinon')
 
 describe('hsts', function () {
-  var maxAge = 7776000000  // 90 days in milliseconds
-  var defaultHeader = 'max-age=' + (maxAge / 1000)
+  var maxAge = 7776000  // 90 days in seconds
+  var defaultHeader = 'max-age=' + maxAge
 
   var handler, req, res, next
   beforeEach(function () {
@@ -85,20 +85,6 @@ describe('hsts', function () {
     handler = hsts({ maxAge: 0 })
     handler(req, res, next)
     assert(res.setHeader.calledWith('Strict-Transport-Security', 'max-age=0'))
-  })
-
-  it('rounds down properly', function () {
-    req.secure = true
-    handler = hsts({ maxAge: 1400 })
-    handler(req, res, next)
-    assert(res.setHeader.calledWith('Strict-Transport-Security', 'max-age=1'))
-  })
-
-  it('rounds up properly', function () {
-    req.secure = true
-    handler = hsts({ maxAge: 600 })
-    handler(req, res, next)
-    assert(res.setHeader.calledWith('Strict-Transport-Security', 'max-age=1'))
   })
 
   it('can include subdomains using includeSubdomains option', function () {

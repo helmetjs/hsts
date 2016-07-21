@@ -1,11 +1,11 @@
 var util = require('core-util-is')
 
-var oneDay = 86400000
+var oneDayInSeconds = 86400
 
 module.exports = function hsts (options) {
   options = options || {}
 
-  var maxAgeMS = options.maxAge != null ? options.maxAge : oneDay
+  var maxAge = options.maxAge != null ? options.maxAge : oneDayInSeconds
   var force = options.force
   var setIf = options.setIf
 
@@ -19,10 +19,10 @@ module.exports = function hsts (options) {
     throw new Error('HSTS passed the wrong number of arguments.')
   }
 
-  if (!util.isNumber(maxAgeMS)) {
+  if (!util.isNumber(maxAge)) {
     throw new TypeError('HSTS must be passed a numeric maxAge parameter.')
   }
-  if (maxAgeMS < 0) {
+  if (maxAge < 0) {
     throw new RangeError('HSTS maxAge must be nonnegative.')
   }
   if (setIf && !util.isFunction(setIf)) {
@@ -32,7 +32,6 @@ module.exports = function hsts (options) {
     throw new Error('setIf and force cannot both be specified.')
   }
 
-  var maxAge = Math.round(maxAgeMS / 1000)
   var header = 'max-age=' + maxAge
   if (options.includeSubDomains || options.includeSubdomains) {
     header += '; includeSubDomains'
