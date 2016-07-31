@@ -50,12 +50,14 @@ describe('hsts', function () {
     assert(!this.res.setHeader.called)
   })
 
-  it('by default, sets max-age to 1 day and includeSubDomains', function () {
+  it('by default, sets max-age to 180 days and adds "includeSubDomains"', function () {
     hsts()(this.req, this.res, this.next)
 
     assert(this.next.calledOnce)
     assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=86400; includeSubDomains'))
+    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=15552000; includeSubDomains'))
+
+    assert.equal(15552000, 180 * 24 * 60 * 60)
   })
 
   it('can set max-age to a positive integer', function () {
@@ -105,7 +107,7 @@ describe('hsts', function () {
 
     assert(this.next.calledOnce)
     assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=86400'))
+    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=15552000'))
   })
 
   it('can disable subdomains with the includeSubdomains option', function () {
@@ -115,7 +117,7 @@ describe('hsts', function () {
 
     assert(this.next.calledOnce)
     assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=86400'))
+    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=15552000'))
   })
 
   it('can enable preloading', function () {
@@ -125,7 +127,7 @@ describe('hsts', function () {
 
     assert(this.next.calledOnce)
     assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=86400; includeSubDomains; preload'))
+    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=15552000; includeSubDomains; preload'))
   })
 
   it('can set the header based on your own condition', function () {
@@ -145,7 +147,7 @@ describe('hsts', function () {
 
     assert(this.next.calledTwice)
     assert(this.next.alwaysCalledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=86400; includeSubDomains'))
+    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=15552000; includeSubDomains'))
   })
 
   it('can force the header', function () {
@@ -157,7 +159,7 @@ describe('hsts', function () {
 
     assert(this.next.calledOnce)
     assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=86400; includeSubDomains'))
+    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=15552000; includeSubDomains'))
   })
 
   it('names its function and middleware', function () {

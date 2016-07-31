@@ -1,11 +1,11 @@
 var util = require('core-util-is')
 
-var oneDayInSeconds = 86400
+var defaultMaxAge = 180 * 24 * 60 * 60
 
 module.exports = function hsts (options) {
   options = options || {}
 
-  var maxAge = options.maxAge != null ? options.maxAge : oneDayInSeconds
+  var maxAge = options.maxAge != null ? options.maxAge : defaultMaxAge
   var includeSubDomains = (options.includeSubDomains !== false) && (options.includeSubdomains !== false)
   var force = options.force
   var setIf = options.setIf
