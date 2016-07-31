@@ -7,22 +7,25 @@ HTTP Strict Transport Security middlware
 
 This middleware adds the `Strict-Transport-Security` header to the response. This tells browsers, "hey, only use HTTPS for the next period of time". ([See the spec](http://tools.ietf.org/html/rfc6797) for more.)
 
-This will set the Strict Transport Security header, telling browsers to visit by HTTPS for the next ninety days:
+This will set the Strict Transport Security header, telling browsers to visit by HTTPS for the next 180 days:
 
 ```javascript
 var hsts = require('hsts')
 
-var ninetyDaysInSeconds = 7776000
-
-app.use(hsts({ maxAge: ninetyDaysInSeconds }))
+app.use(hsts({
+  maxAge: 15552000  // 180 days in seconds
+}))
+// Strict-Transport-Security: max-age: 15552000; includeSubDomains
 ```
 
-You can also include subdomains. If this is set on *example.com*, supported browsers will also use HTTPS on *my-subdomain.example.com*. Here's how you do that:
+Note that the max age must be in seconds. *This was different in previous versions of this module!*
+
+The `includeSubDomains` directive is present by default. If this header is set on *example.com*, supported browsers will also use HTTPS on *my-subdomain.example.com*. You can disable this:
 
 ```javascript
 app.use(hsts({
-  maxAge: 10886400,       // 18 weeks in seconds
-  includeSubDomains: true
+  maxAge: 15552000,
+  includeSubDomains: false
 }))
 ```
 
@@ -36,13 +39,13 @@ app.use(hsts({
 }))
 ```
 
-This'll be set if `req.secure` is true, a boolean auto-populated by Express. If you're not using Express, that value won't necessarily be set, so you have two options:
+This header will be set `req.secure` is true, a boolean auto-populated by Express. If you're not using Express, that value won't necessarily be set, so you have two options:
 
 ```javascript
-// Set the header based on conditions
+// Set the header based on a condition
 app.use(hsts({
   maxAge: 1234000,
-  setIf: function(req, res) {
+  setIf: function (req, res) {
     return req.secure || (req.headers['x-forwarded-proto'] === 'https')
   }
 }))
@@ -53,7 +56,5 @@ app.use(hsts({
   force: true
 }))
 ```
-
-Note that the max age must be in seconds.
 
 This only works if your site actually has HTTPS. It won't tell users on HTTP to *switch* to HTTPS, it will just tell HTTPS users to stick around. You can enforce this with the [express-enforces-ssl](https://github.com/aredo/express-enforces-ssl) module. This header is [somewhat well-supported by browsers](http://caniuse.com/#feat=stricttransportsecurity).
