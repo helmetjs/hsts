@@ -21,7 +21,8 @@
   },
   "bugs": "https://github.com/helmetjs/hsts/issues",
   "scripts": {
-    "test": "standard && mocha"
+    "pretest": "standard",
+    "test": "mocha"
   },
   "devDependencies": {
     "mocha": "^2.3.4",
