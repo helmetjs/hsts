@@ -43,7 +43,7 @@ This'll be set if `req.secure` is true, a boolean auto-populated by Express. If 
 app.use(hsts({
   maxAge: 1234000,
   setIf: function(req, res) {
-    return Math.random() < 0.5;
+    return req.secure || (req.headers['x-forwarded-proto'] === 'https')
   }
 }))
 
