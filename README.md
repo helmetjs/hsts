@@ -39,7 +39,7 @@ app.use(hsts({
 }))
 ```
 
-This header will be set `req.secure` is true, a boolean auto-populated by Express. If you're not using Express, that value won't necessarily be set, so you have two options:
+This header will be set if `req.secure` is true, a boolean auto-populated by Express. If you're not using Express, that value won't necessarily be set, so you have two options:
 
 ```javascript
 // Set the header based on a condition
