@@ -39,7 +39,9 @@ module.exports = function hsts (options) {
     header += '; includeSubDomains'
   }
   if (options.preload) {
-    header += '; preload'
+    if (options.preload === true) {
+      header += '; preload'
+    }
   }
 
   return function hsts (req, res, next) {
