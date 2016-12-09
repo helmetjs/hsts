@@ -5,7 +5,7 @@ HTTP Strict Transport Security middleware
 
 [_Looking for a changelog?_](https://github.com/helmetjs/helmet/blob/master/HISTORY.md)
 
-This middleware adds the `Strict-Transport-Security` header to the response. This tells browsers, "hey, only use HTTPS for the next period of time". ([See the spec](http://tools.ietf.org/html/rfc6797) for more.)
+This middleware adds the `Strict-Transport-Security` header to the response. This tells browsers, "hey, only use HTTPS for the next period of time". ([See the spec](http://tools.ietf.org/html/rfc6797) for more.) Note that the header won't tell users on HTTP to *switch* to HTTPS, it will just tell HTTPS users to stick around. You can enforce HTTPS with the [express-enforces-ssl](https://github.com/aredo/express-enforces-ssl) module.
 
 This will set the Strict Transport Security header, telling browsers to visit by HTTPS for the next 180 days:
 
@@ -57,4 +57,4 @@ app.use(hsts({
 }))
 ```
 
-This only works if your site actually has HTTPS. It won't tell users on HTTP to *switch* to HTTPS, it will just tell HTTPS users to stick around. You can enforce this with the [express-enforces-ssl](https://github.com/aredo/express-enforces-ssl) module. This header is [somewhat well-supported by browsers](http://caniuse.com/#feat=stricttransportsecurity).
+This header is [somewhat well-supported by browsers](http://caniuse.com/#feat=stricttransportsecurity).
