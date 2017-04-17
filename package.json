@@ -2,7 +2,7 @@
   "name": "hsts",
   "author": "Adam Baldwin <baldwin@andyet.net> (http://andyet.net/team/baldwin)",
   "contributors": [
-    "Evan Hahn <me@evanhahn.com> (http://evanhahn.com)"
+    "Evan Hahn <me@evanhahn.com> (https://evanhahn.com)"
   ],
   "description": "HTTP Strict Transport Security middleware.",
   "version": "2.0.0",
