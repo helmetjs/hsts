@@ -30,9 +30,6 @@
     "standard": "^10.0.2",
     "supertest": "^3.0.0"
   },
-  "dependencies": {
-    "core-util-is": "1.0.2"
-  },
   "standard": {
     "globals": [
       "describe",

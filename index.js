@@ -1,5 +1,3 @@
-var util = require('core-util-is')
-
 var defaultMaxAge = 180 * 24 * 60 * 60
 
 module.exports = function hsts (options) {
@@ -15,13 +13,13 @@ module.exports = function hsts (options) {
   if (arguments.length > 1) {
     throw new Error('HSTS passed the wrong number of arguments.')
   }
-  if (!util.isNumber(maxAge)) {
+  if (typeof maxAge !== 'number') {
     throw new TypeError('HSTS must be passed a numeric maxAge parameter.')
   }
   if (maxAge < 0) {
     throw new RangeError('HSTS maxAge must be nonnegative.')
   }
-  if (options.hasOwnProperty('setIf') && !util.isFunction(setIf)) {
+  if (typeof setIf !== 'function') {
     throw new TypeError('setIf must be a function.')
   }
   if (options.hasOwnProperty('includeSubDomains') && options.hasOwnProperty('includeSubdomains')) {
