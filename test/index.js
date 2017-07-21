@@ -1,19 +1,18 @@
-// Unlike other tests, these require us to mock requests and responses.
-// Because this header should only be set for HTTPS, which is hard to fake
-// reliably, we call the middleware function directly, with fake request and
-// response objects.
-
 var hsts = require('..')
 
 var assert = require('assert')
-var sinon = require('sinon')
+var connect = require('connect')
+var request = require('supertest')
 
 describe('hsts', function () {
-  beforeEach(function () {
-    this.req = { secure: true }
-    this.res = { setHeader: sinon.spy() }
-    this.next = sinon.spy()
-  })
+  function app (options) {
+    var result = connect()
+    result.use(hsts(options))
+    result.use(function (req, res) {
+      res.end('Hello world!')
+    })
+    return result
+  }
 
   it('throws an error with invalid parameters', function () {
     assert.throws(hsts.bind(this, { maxAge: -123 }))
@@ -26,6 +25,8 @@ describe('hsts', function () {
 
     assert.throws(hsts.bind(this, { setIf: 123 }))
     assert.throws(hsts.bind(this, { setIf: true }))
+    assert.throws(hsts.bind(this, { setIf: false }))
+    assert.throws(hsts.bind(this, { setIf: null }))
 
     assert.throws(hsts.bind(this, { maxage: false }))
     assert.throws(hsts.bind(this, { maxage: 1234 }))
@@ -37,129 +38,108 @@ describe('hsts', function () {
       includeSubDomains: false,
       includeSubdomains: true
     }))
-    assert.throws(hsts.bind(this, { setIf: function () {}, force: true }))
-  })
-
-  it('sets no header if req.secure is false', function () {
-    this.req.secure = false
-
-    hsts()(this.req, this.res, this.next)
-
-    assert(this.next.calledOnce)
-    assert(this.next.calledWithExactly())
-    assert(!this.res.setHeader.called)
   })
 
   it('by default, sets max-age to 180 days and adds "includeSubDomains"', function () {
-    hsts()(this.req, this.res, this.next)
-
-    assert(this.next.calledOnce)
-    assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=15552000; includeSubDomains'))
-
     assert.equal(15552000, 180 * 24 * 60 * 60)
+
+    return request(app())
+      .get('/')
+      .expect(200)
+      .expect('Strict-Transport-Security', 'max-age=15552000; includeSubDomains')
   })
 
   it('can set max-age to a positive integer', function () {
-    hsts({
+    return request(app({
       maxAge: 1234
-    })(this.req, this.res, this.next)
-
-    assert(this.next.calledOnce)
-    assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=1234; includeSubDomains'))
+    }))
+      .get('/')
+      .expect(200)
+      .expect('Strict-Transport-Security', 'max-age=1234; includeSubDomains')
   })
 
   it('rounds the max-age', function () {
-    hsts({
+    return request(app({
       maxAge: 1234.56
-    })(this.req, this.res, this.next)
-
-    assert(this.next.calledOnce)
-    assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=1235; includeSubDomains'))
+    }))
+      .get('/')
+      .expect(200)
+      .expect('Strict-Transport-Security', 'max-age=1235; includeSubDomains')
   })
 
   it('can set max-age to -0', function () {
-    hsts({
+    return request(app({
       maxAge: -0
-    })(this.req, this.res, this.next)
-
-    assert(this.next.calledOnce)
-    assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=0; includeSubDomains'))
+    }))
+      .get('/')
+      .expect(200)
+      .expect('Strict-Transport-Security', 'max-age=0; includeSubDomains')
   })
 
   it('can set max-age to 0', function () {
-    hsts({
+    return request(app({
       maxAge: 0
-    })(this.req, this.res, this.next)
-
-    assert(this.next.calledOnce)
-    assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=0; includeSubDomains'))
+    }))
+      .get('/')
+      .expect(200)
+      .expect('Strict-Transport-Security', 'max-age=0; includeSubDomains')
   })
 
   it('can disable subdomains with the includeSubDomains option', function () {
-    hsts({
+    return request(app({
       includeSubDomains: false
-    })(this.req, this.res, this.next)
-
-    assert(this.next.calledOnce)
-    assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=15552000'))
+    }))
+      .get('/')
+      .expect(200)
+      .expect('Strict-Transport-Security', 'max-age=15552000')
   })
 
   it('can disable subdomains with the includeSubdomains option', function () {
-    hsts({
+    return request(app({
       includeSubdomains: false
-    })(this.req, this.res, this.next)
-
-    assert(this.next.calledOnce)
-    assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=15552000'))
+    }))
+      .get('/')
+      .expect(200)
+      .expect('Strict-Transport-Security', 'max-age=15552000')
   })
 
   it('can enable preloading', function () {
-    hsts({
+    return request(app({
       preload: true
-    })(this.req, this.res, this.next)
-
-    assert(this.next.calledOnce)
-    assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=15552000; includeSubDomains; preload'))
+    }))
+      .get('/')
+      .expect(200)
+      .expect('Strict-Transport-Security', 'max-age=15552000; includeSubDomains; preload')
   })
 
   it('can set the header based on your own condition', function () {
-    var options = {
+    var server = app({
       setIf: function (req) {
-        return req.pleaseSet
+        return req.headers['x-should-set'] === 'yes'
       }
-    }
+    })
 
-    hsts(options)({}, this.res, this.next)
-
-    assert(this.next.calledOnce)
-    assert(this.next.calledWithExactly())
-    assert(!this.res.setHeader.called)
-
-    hsts(options)({ pleaseSet: true }, this.res, this.next)
-
-    assert(this.next.calledTwice)
-    assert(this.next.alwaysCalledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=15552000; includeSubDomains'))
+    return request(server)
+      .get('/')
+      .set('X-Should-Set', 'no')
+      .expect(200)
+      .then(function (res) {
+        assert(!('strict-transport-security' in res.headers))
+      })
+      .then(function () {
+        return request(server)
+          .get('/')
+          .set('X-Should-Set', 'yes')
+          .expect(200)
+          .expect('Strict-Transport-Security', 'max-age=15552000; includeSubDomains')
+      })
   })
 
-  it('can force the header', function () {
-    this.req.secure = false
-
-    hsts({
-      force: true
-    })(this.req, this.res, this.next)
-
-    assert(this.next.calledOnce)
-    assert(this.next.calledWithExactly())
-    assert(this.res.setHeader.calledWithExactly('Strict-Transport-Security', 'max-age=15552000; includeSubDomains'))
+  it('does nothing with the `force` option; allowed for backwards compatibility', function () {
+    return request(app({ force: true }))
+      .get('/')
+      .expect(200)
+      .expect('Strict-Transport-Security', 'max-age=15552000; includeSubDomains')
   })
 
   it('names its function and middleware', function () {

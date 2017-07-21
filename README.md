@@ -39,21 +39,14 @@ app.use(hsts({
 }))
 ```
 
-This header will be set if `req.secure` is true, a boolean auto-populated by Express. If you're not using Express, that value won't necessarily be set, so you have two options:
+This header will always be set because [the header is ignored in insecure HTTP](https://tools.ietf.org/html/rfc6797#section-8.1). If you wish to set it conditionally, you can use `setIf`:
 
 ```javascript
-// Set the header based on a condition
 app.use(hsts({
   maxAge: 1234000,
   setIf: function (req, res) {
     return req.secure || (req.headers['x-forwarded-proto'] === 'https')
   }
-}))
-
-// ALWAYS set the header
-app.use(hsts({
-  maxAge: 1234000,
-  force: true
 }))
 ```
 
