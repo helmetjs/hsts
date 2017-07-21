@@ -18,6 +18,7 @@ describe('hsts', function () {
     assert.throws(hsts.bind(this, { maxAge: -123 }))
     assert.throws(hsts.bind(this, { maxAge: '123' }))
     assert.throws(hsts.bind(this, { maxAge: true }))
+    assert.throws(hsts.bind(this, { maxAge: false }))
     assert.throws(hsts.bind(this, { maxAge: {} }))
     assert.throws(hsts.bind(this, { maxAge: [] }))
 
