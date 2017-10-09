@@ -1,6 +1,6 @@
 var defaultMaxAge = 180 * 24 * 60 * 60
 
-module.exports = function hsts (options) {
+function hsts (options) {
   options = options || {}
 
   var maxAge = options.maxAge != null ? options.maxAge : defaultMaxAge
@@ -42,6 +42,9 @@ module.exports = function hsts (options) {
     next()
   }
 }
+
+module.exports = hsts;
+module.exports.hsts = hsts;
 
 function alwaysTrue () {
   return true
