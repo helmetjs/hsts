@@ -36,5 +36,6 @@
       "beforeEach",
       "it"
     ]
-  }
+  },
+  "typings": "index.d.ts"
 }
