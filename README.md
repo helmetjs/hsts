@@ -50,4 +50,4 @@ app.use(hsts({
 }))
 ```
 
-This header is [somewhat well-supported by browsers](http://caniuse.com/#feat=stricttransportsecurity).
+This header is [somewhat well-supported by browsers](https://caniuse.com/#feat=stricttransportsecurity).
