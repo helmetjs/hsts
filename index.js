@@ -1,9 +1,9 @@
-var defaultMaxAge = 180 * 24 * 60 * 60
+var DEFAULT_MAX_AGE = 180 * 24 * 60 * 60
 
 module.exports = function hsts (options) {
   options = options || {}
 
-  var maxAge = options.maxAge != null ? options.maxAge : defaultMaxAge
+  var maxAge = options.maxAge != null ? options.maxAge : DEFAULT_MAX_AGE
   var includeSubDomains = (options.includeSubDomains !== false) && (options.includeSubdomains !== false)
   var setIf = options.hasOwnProperty('setIf') ? options.setIf : alwaysTrue
 
