@@ -10,7 +10,7 @@ This middleware adds the `Strict-Transport-Security` header to the response. Thi
 This will set the Strict Transport Security header, telling browsers to visit by HTTPS for the next 180 days:
 
 ```javascript
-var hsts = require('hsts')
+const hsts = require('hsts')
 
 app.use(hsts({
   maxAge: 15552000  // 180 days in seconds
@@ -44,7 +44,7 @@ This header will always be set because [the header is ignored in insecure HTTP](
 ```javascript
 app.use(hsts({
   maxAge: 1234000,
-  setIf: function (req, res) {
+  setIf: (req, res) => {
     return req.secure || (req.headers['x-forwarded-proto'] === 'https')
   }
 }))
