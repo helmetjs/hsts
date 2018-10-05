@@ -42,7 +42,7 @@ describe('hsts', function () {
   })
 
   it('by default, sets max-age to 180 days and adds "includeSubDomains"', function () {
-    assert.equal(15552000, 180 * 24 * 60 * 60)
+    assert.strictEqual(15552000, 180 * 24 * 60 * 60)
 
     return request(app())
       .get('/')
@@ -144,7 +144,7 @@ describe('hsts', function () {
   })
 
   it('names its function and middleware', function () {
-    assert.equal(hsts.name, 'hsts')
-    assert.equal(hsts().name, 'hsts')
+    assert.strictEqual(hsts.name, 'hsts')
+    assert.strictEqual(hsts().name, 'hsts')
   })
 })
