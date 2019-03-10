@@ -19,6 +19,7 @@
     "type": "git",
     "url": "git://github.com/helmetjs/hsts.git"
   },
+  "homepage": "https://helmetjs.github.io/docs/hsts/",
   "bugs": "https://github.com/helmetjs/hsts/issues",
   "scripts": {
     "pretest": "standard --fix",
