@@ -9,6 +9,10 @@ module.exports = function hsts (options) {
     deprecate('The "includeSubdomains" parameter is deprecated. Use "includeSubDomains" (with a capital D) instead.')
   }
 
+  if ('setIf' in options) {
+    deprecate('The "setIf" parameter is deprecated. Refer to the documentation to see how to set the header conditionally.')
+  }
+
   var maxAge = options.maxAge != null ? options.maxAge : DEFAULT_MAX_AGE
   var includeSubDomains = (options.includeSubDomains !== false) && (options.includeSubdomains !== false)
   var setIf = options.hasOwnProperty('setIf') ? options.setIf : alwaysTrue

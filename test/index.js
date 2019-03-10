@@ -99,8 +99,9 @@ describe('hsts', function () {
     // We can remove this test in hsts@3.
     const deprecationPromise = new Promise(resolve => {
       process.on('deprecation', (deprecationError) => {
-        assert(deprecationError.message.indexOf('The "includeSubdomains" parameter is deprecated. Use "includeSubDomains" (with a capital D) instead.') !== -1)
-        resolve()
+        if (deprecationError.message.includes('The "includeSubdomains" parameter is deprecated. Use "includeSubDomains" (with a capital D) instead.')) {
+          resolve()
+        }
       })
     })
 
@@ -123,27 +124,41 @@ describe('hsts', function () {
       .expect('Strict-Transport-Security', 'max-age=15552000; includeSubDomains; preload')
   })
 
-  it('can set the header based on your own condition', function () {
-    var server = app({
+  it('can use setIf to conditionally set the header, but it is deprecated', function () {
+    // We can remove this test in hsts@3.
+    const deprecationPromise = new Promise(resolve => {
+      process.on('deprecation', (deprecationError) => {
+        if (deprecationError.message.includes('The "setIf" parameter is deprecated. Refer to the documentation to see how to set the header conditionally.')) {
+          resolve()
+        }
+      })
+    })
+
+    const server = app({
       setIf: function (req) {
         return req.headers['x-should-set'] === 'yes'
       }
     })
 
-    return request(server)
+    const shouldntSetPromise = request(server)
       .get('/')
       .set('X-Should-Set', 'no')
       .expect(200)
       .then(function (res) {
         assert(!('strict-transport-security' in res.headers))
       })
-      .then(function () {
-        return request(server)
-          .get('/')
-          .set('X-Should-Set', 'yes')
-          .expect(200)
-          .expect('Strict-Transport-Security', 'max-age=15552000; includeSubDomains')
-      })
+
+    const shouldSetPromise = request(server)
+      .get('/')
+      .set('X-Should-Set', 'yes')
+      .expect(200)
+      .expect('Strict-Transport-Security', 'max-age=15552000; includeSubDomains')
+
+    return Promise.all([
+      deprecationPromise,
+      shouldntSetPromise,
+      shouldSetPromise
+    ])
   })
 
   it('does nothing with the `force` option; allowed for backwards compatibility', function () {
