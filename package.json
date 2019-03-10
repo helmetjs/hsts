@@ -21,6 +21,9 @@
   },
   "homepage": "https://helmetjs.github.io/docs/hsts/",
   "bugs": "https://github.com/helmetjs/hsts/issues",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "scripts": {
     "pretest": "standard --fix",
     "test": "mocha"
