@@ -95,13 +95,23 @@ describe('hsts', function () {
       .expect('Strict-Transport-Security', 'max-age=15552000')
   })
 
-  it('can disable subdomains with the includeSubdomains option', function () {
-    return request(app({
+  it('can disable subdomains with the includeSubdomains option, but a deprecation warning is shown', function () {
+    // We can remove this test in hsts@3.
+    const deprecationPromise = new Promise(resolve => {
+      process.on('deprecation', (deprecationError) => {
+        assert(deprecationError.message.indexOf('The "includeSubdomains" parameter is deprecated. Use "includeSubDomains" (with a capital D) instead.') !== -1)
+        resolve()
+      })
+    })
+
+    const supertestPromise = request(app({
       includeSubdomains: false
     }))
       .get('/')
       .expect(200)
       .expect('Strict-Transport-Security', 'max-age=15552000')
+
+    return Promise.all([deprecationPromise, supertestPromise])
   })
 
   it('can enable preloading', function () {

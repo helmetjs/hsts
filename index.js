@@ -1,7 +1,13 @@
+var deprecate = require('depd')('hsts')
+
 var DEFAULT_MAX_AGE = 180 * 24 * 60 * 60
 
 module.exports = function hsts (options) {
   options = options || {}
+
+  if ('includeSubdomains' in options) {
+    deprecate('The "includeSubdomains" parameter is deprecated. Use "includeSubDomains" (with a capital D) instead.')
+  }
 
   var maxAge = options.maxAge != null ? options.maxAge : DEFAULT_MAX_AGE
   var includeSubDomains = (options.includeSubDomains !== false) && (options.includeSubdomains !== false)
