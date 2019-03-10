@@ -37,15 +37,20 @@ app.use(hsts({
 }))
 ```
 
-This header will always be set because [the header is ignored in insecure HTTP](https://tools.ietf.org/html/rfc6797#section-8.1). If you wish to set it conditionally, you can use `setIf`:
+This header will always be set because [the header is ignored in insecure HTTP](https://tools.ietf.org/html/rfc6797#section-8.1). You may wish to set it conditionally:
 
 ```javascript
-app.use(hsts({
-  maxAge: 1234000,
-  setIf: (req, res) => {
-    return req.secure || (req.headers['x-forwarded-proto'] === 'https')
+const hstsMiddleware = hsts({
+  maxAge: 1234000
+})
+
+app.use((req, res, next) => {
+  if (req.secure) {
+    hstsMiddleware(req, res, next)
+  } else {
+    next()
   }
-}))
+})
 ```
 
 This header is [somewhat well-supported by browsers](https://caniuse.com/#feat=stricttransportsecurity).
