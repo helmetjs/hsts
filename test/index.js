@@ -162,6 +162,7 @@ describe('hsts', function () {
   })
 
   it('does nothing with the `force` option; allowed for backwards compatibility', function () {
+    // We should remove this test in hsts@3.
     return request(app({ force: true }))
       .get('/')
       .expect(200)
