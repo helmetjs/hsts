@@ -44,7 +44,5 @@
       "it"
     ]
   },
-  "dependencies": {
-    "depd": "2.0.0"
-  }
+  "dependencies": {}
 }
