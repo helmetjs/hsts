@@ -5,7 +5,7 @@ const deprecate = depd('hsts');
 
 const DEFAULT_MAX_AGE = 180 * 24 * 60 * 60;
 
-interface HSTSOptions {
+interface HstsOptions {
   includeSubDomains?: boolean;
   maxAge?: number;
   preload?: boolean;
@@ -16,7 +16,7 @@ function alwaysTrue () {
   return true;
 }
 
-export = function hsts (options: HSTSOptions = {}) {
+export = function hsts (options: HstsOptions = {}) {
   if ('includeSubdomains' in options) {
     deprecate('The "includeSubdomains" parameter is deprecated. Use "includeSubDomains" (with a capital D) instead.');
   }
@@ -58,7 +58,6 @@ export = function hsts (options: HSTSOptions = {}) {
     if (setIf(req, res)) {
       res.setHeader('Strict-Transport-Security', header);
     }
-
     next();
   };
 }
