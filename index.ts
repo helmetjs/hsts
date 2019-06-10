@@ -7,7 +7,7 @@ const DEFAULT_MAX_AGE = 180 * 24 * 60 * 60;
 
 interface HstsOptions {
   includeSubDomains?: boolean;
-  maxAge?: number;
+  maxAge?: number | null;
   preload?: boolean;
   setIf?: (req: IncomingMessage, res: ServerResponse) => boolean;
 }
@@ -25,21 +25,27 @@ export = function hsts (options: HstsOptions = {}) {
     deprecate('The "setIf" parameter is deprecated. Refer to the documentation to see how to set the header conditionally.');
   }
 
-  const { maxAge = DEFAULT_MAX_AGE, setIf = alwaysTrue } = options;
-
-  if ('maxage' in options) {
+  if (Object.prototype.hasOwnProperty.call(options, 'maxage')) {
     throw new Error('maxage is not a supported property. Did you mean to pass "maxAge" instead of "maxage"?');
   }
+
+  const maxAge = options.maxAge !== null && options.maxAge !== undefined ? options.maxAge : DEFAULT_MAX_AGE;
   if (typeof maxAge !== 'number') {
     throw new TypeError('HSTS must be passed a numeric maxAge parameter.');
   }
   if (maxAge < 0) {
     throw new RangeError('HSTS maxAge must be nonnegative.');
   }
+
+  const { setIf = alwaysTrue } = options;
   if (typeof setIf !== 'function') {
     throw new TypeError('setIf must be a function.');
   }
-  if ('includeSubDomains' in options && 'includeSubdomains' in options) {
+
+  if (
+    Object.prototype.hasOwnProperty.call(options, 'includeSubDomains') &&
+    Object.prototype.hasOwnProperty.call(options, 'includeSubdomains')
+  ) {
     throw new Error('includeSubDomains and includeSubdomains cannot both be specified.');
   }
 

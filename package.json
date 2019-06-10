@@ -44,7 +44,7 @@
     "build": "npm run clean && tsc"
   },
   "dependencies": {
-    "depd": "^2.0.0"
+    "depd": "2.0.0"
   },
   "devDependencies": {
     "@types/connect": "^3.4.32",
