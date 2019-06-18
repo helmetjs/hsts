@@ -149,8 +149,8 @@ describe('hsts', () => {
     const shouldntSetPromise = request(server)
       .get('/')
       .set('X-Should-Set', 'no')
-      .then((res: any) => {
-        expect(res.headers).not.toHaveProperty('strict-transport-security');
+      .then((res) => {
+        expect(res.header['strict-transport-security']).toBeUndefined();
       });
 
     const shouldSetPromise = request(server)
