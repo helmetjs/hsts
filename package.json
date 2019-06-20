@@ -32,6 +32,7 @@
   "files": [
     "LICENSE",
     "README.md",
+    "CHANGELOG.md",
     "dist/index.js",
     "dist/index.d.ts"
   ],
