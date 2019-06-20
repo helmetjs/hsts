@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+### Added
+* TypeScript type definitions. See [#25](https://github.com/helmetjs/hsts/pull/25)
+
 ## 2.2.0 - 2019-03-10
 ### Added
 * Created a changelog
