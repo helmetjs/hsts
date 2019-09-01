@@ -4,6 +4,12 @@
 ### Added
 * TypeScript type definitions. See [#25](https://github.com/helmetjs/hsts/pull/25)
 
+### Changed
+* Dropped support for Node <8
+* `maxAge` must now be a number if supplied; `undefined` and `null` are no longer allowed
+* Removed deprecated `setIf` option. See [#22](https://github.com/helmetjs/hsts/issues/22)
+* Removed deprecated `includeSubdomains` option; use `includeSubDomains` instead. See [#21](https://github.com/helmetjs/hsts/issues/21)
+
 ## 2.2.0 - 2019-03-10
 ### Added
 * Created a changelog

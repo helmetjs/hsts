@@ -25,7 +25,7 @@
     "email": "me@evanhahn.com"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=8.0.0"
   },
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -44,12 +44,9 @@
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc"
   },
-  "dependencies": {
-    "depd": "2.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/connect": "^3.4.33",
-    "@types/depd": "^1.1.32",
     "@types/jest": "^25.2.1",
     "@types/supertest": "^2.0.8",
     "@typescript-eslint/eslint-plugin": "^2.27.0",

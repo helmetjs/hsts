@@ -15,7 +15,7 @@ app.use(hsts({
 // Strict-Transport-Security: max-age: 15552000; includeSubDomains
 ```
 
-Note that the max age must be in seconds. *This was different in previous versions of this module!*
+Note that the max age must be in seconds.
 
 The `includeSubDomains` directive is present by default. If this header is set on *example.com*, supported browsers will also use HTTPS on *my-subdomain.example.com*. You can disable this:
 

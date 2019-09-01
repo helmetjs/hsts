@@ -23,23 +23,8 @@ describe('hsts', () => {
     expect(() => hsts({ maxAge: {} } as any)).toThrow();
     expect(() => hsts({ maxAge: [] } as any)).toThrow();
 
-    expect(() => hsts({ setIf: 123 } as any)).toThrow();
-    expect(() => hsts({ setIf: true } as any)).toThrow();
-    expect(() => hsts({ setIf: false } as any)).toThrow();
-    expect(() => hsts({ setIf: null } as any)).toThrow();
-
     expect(() => hsts({ maxage: false } as any)).toThrow();
     expect(() => hsts({ maxage: 1234 } as any)).toThrow();
-    expect(() =>
-      hsts({
-        includeSubDomains: true,
-        includeSubdomains: true,
-      } as any)).toThrow();
-    expect(() =>
-      hsts({
-        includeSubDomains: false,
-        includeSubdomains: true,
-      } as any)).toThrow();
     /* eslint-enable @typescript-eslint/no-explicit-any */
   });
 
@@ -94,29 +79,6 @@ describe('hsts', () => {
       .expect('Strict-Transport-Security', 'max-age=15552000');
   });
 
-  it('can disable subdomains with the includeSubdomains option, but a deprecation warning is shown', () => {
-    // We can remove this test in hsts@3.
-    const deprecationPromise = new Promise(resolve => {
-      process.on('deprecation', deprecationError => {
-        if (
-          deprecationError.message.includes('The "includeSubdomains" parameter is deprecated. Use "includeSubDomains" (with a capital D) instead.')
-        ) {
-          resolve();
-        }
-      });
-    });
-
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    const supertestPromise = request(app(hsts({
-      includeSubdomains: false,
-    } as any)))
-      .get('/')
-      .expect('Strict-Transport-Security', 'max-age=15552000');
-    /* eslint-enable @typescript-eslint/no-explicit-any */
-
-    return Promise.all([deprecationPromise, supertestPromise]);
-  });
-
   it('can enable preloading', async () => {
     await request(app(hsts({
       preload: true,
@@ -126,60 +88,6 @@ describe('hsts', () => {
         'Strict-Transport-Security',
         'max-age=15552000; includeSubDomains; preload'
       );
-  });
-
-  it('can use setIf to conditionally set the header, but it is deprecated', () => {
-    // We can remove this test in hsts@3.
-    const deprecationPromise = new Promise(resolve => {
-      process.on('deprecation', deprecationError => {
-        if (
-          deprecationError.message.includes('The "setIf" parameter is deprecated. Refer to the documentation to see how to set the header conditionally.')
-        ) {
-          resolve();
-        }
-      });
-    });
-
-    const server = app(hsts({
-      setIf(req) {
-        return req.headers['x-should-set'] === 'yes';
-      },
-    }));
-
-    const shouldntSetPromise = request(server)
-      .get('/')
-      .set('X-Should-Set', 'no')
-      .then((res) => {
-        expect(res.header['strict-transport-security']).toBeUndefined();
-      });
-
-    const shouldSetPromise = request(server)
-      .get('/')
-      .set('X-Should-Set', 'yes')
-      .expect(
-        'Strict-Transport-Security',
-        'max-age=15552000; includeSubDomains'
-      );
-
-    return Promise.all([
-      deprecationPromise,
-      shouldntSetPromise,
-      shouldSetPromise,
-    ]);
-  });
-
-  it('does nothing with the `force` option; allowed for backwards compatibility', async () => {
-    // We should remove this test in hsts@3.
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    await request(app(hsts({
-      force: true,
-    } as any)))
-      .get('/')
-      .expect(
-        'Strict-Transport-Security',
-        'max-age=15552000; includeSubDomains'
-      );
-    /* eslint-enable @typescript-eslint/no-explicit-any */
   });
 
   it('names its function and middleware', () => {
