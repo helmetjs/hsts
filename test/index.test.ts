@@ -53,6 +53,12 @@ describe('hsts', () => {
     })))
       .get('/')
       .expect('Strict-Transport-Security', 'max-age=1235; includeSubDomains');
+
+    await request(app(hsts({
+      maxAge: 1234.49,
+    })))
+      .get('/')
+      .expect('Strict-Transport-Security', 'max-age=1234; includeSubDomains');
   });
 
   it('can set max-age to -0', async () => {
