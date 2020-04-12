@@ -6,7 +6,7 @@
 * `maxAge` now supports `BigInt`s
 
 ### Changed
-* Dropped support for Node <8
+* Dropped support for Node <10
 * `maxAge` must now be a number if supplied; `undefined` and `null` are no longer allowed
 * Removed deprecated `setIf` option. See [#22](https://github.com/helmetjs/hsts/issues/22)
 * Removed deprecated `includeSubdomains` option; use `includeSubDomains` instead. See [#21](https://github.com/helmetjs/hsts/issues/21)
