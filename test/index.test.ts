@@ -17,14 +17,25 @@ describe('hsts', () => {
   it('throws an error with invalid parameters', () => {
     /* eslint-disable @typescript-eslint/no-explicit-any */
     expect(() => hsts({ maxAge: -123 })).toThrow();
+    expect(() => hsts({ maxAge: BigInt(-123) })).toThrow();
+    expect(() => hsts({ maxAge: -0.1 })).toThrow();
+    expect(() => hsts({ maxAge: Infinity })).toThrow();
+    expect(() => hsts({ maxAge: -Infinity })).toThrow();
+    expect(() => hsts({ maxAge: NaN })).toThrow();
+
     expect(() => hsts({ maxAge: '123' } as any)).toThrow();
     expect(() => hsts({ maxAge: true } as any)).toThrow();
     expect(() => hsts({ maxAge: false } as any)).toThrow();
     expect(() => hsts({ maxAge: {} } as any)).toThrow();
     expect(() => hsts({ maxAge: [] } as any)).toThrow();
+    expect(() => hsts({ maxAge: null } as any)).toThrow();
+    expect(() => hsts({ maxAge: undefined } as any)).toThrow();
 
     expect(() => hsts({ maxage: false } as any)).toThrow();
     expect(() => hsts({ maxage: 1234 } as any)).toThrow();
+
+    expect(() => hsts({ includeSubdomains: false } as any)).toThrow();
+    expect(() => hsts({ includeSubdomains: true } as any)).toThrow();
     /* eslint-enable @typescript-eslint/no-explicit-any */
   });
 
@@ -75,6 +86,14 @@ describe('hsts', () => {
     })))
       .get('/')
       .expect('Strict-Transport-Security', 'max-age=0; includeSubDomains');
+  });
+
+  it('can set max-age to a bigint', async () => {
+    await request(app(hsts({
+      maxAge: BigInt(1234),
+    })))
+      .get('/')
+      .expect('Strict-Transport-Security', 'max-age=1234; includeSubDomains');
   });
 
   it('can disable subdomains with the includeSubDomains option', async () => {

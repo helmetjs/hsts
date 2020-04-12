@@ -1,3 +1,6 @@
 {
-  "extends": ["helmet"]
+  "extends": ["helmet"],
+  "globals": {
+    "BigInt": true
+  }
 }

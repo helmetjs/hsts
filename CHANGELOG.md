@@ -3,6 +3,7 @@
 ## Unreleased
 ### Added
 * TypeScript type definitions. See [#25](https://github.com/helmetjs/hsts/pull/25)
+* `maxAge` now supports `BigInt`s
 
 ### Changed
 * Dropped support for Node <8
